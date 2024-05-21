@@ -2,14 +2,17 @@ import "./style.css";
 const canvas = document.querySelector("#game_canvas");
 const ctx = canvas.getContext("2d");
 
+const img_back = new Image();
+img_back.src = "assets/background.png";
+
 const img_idle = new Image();
-img_idle.src = "assets/Fighter.png";
+img_idle.src = "assets/default right.png";
 
 const img_walk_r = new Image();
-img_walk_r.src = "assets/Figther right.png";
+img_walk_r.src = "assets/default right.png";
 
 const img_walk_l = new Image();
-img_walk_l.src = "assets/Fighter left.png";
+img_walk_l.src = "assets/default left.png";
 
 const cursor = {
   x: 0,
@@ -44,9 +47,11 @@ window.addEventListener("keyup", function (evt) {
   console.log(evt);
   if (evt.key == "a") {
     key.a.pressed = false;
+    fighter.state = "idle";
   }
   if (evt.key == "d") {
     key.d.pressed = false;
+    fighter.state = "idle";
   }
 });
 
@@ -79,11 +84,11 @@ class Character {
     );
 
     if (key.d.pressed) {
-      this.pos.x += 8;
+      this.pos.x += 16;
       if (this.pos.x >= 1035) this.pos.x = 1035;
       this.state = "walk_r";
     } else if (key.a.pressed) {
-      this.pos.x -= 8;
+      this.pos.x -= 16;
       if (this.pos.x <= 0) this.pos.x = 0;
       this.state = "walk_l";
     }
@@ -106,15 +111,28 @@ const fighter = new Character({
   img: img_idle,
   pos: {
     x: 150,
-    y: 485,
+    y: 580,
   },
 });
+///////////////////////////////////////////
+
+let then = Date.now();
+const fps = 15;
+const fpsInterval = 1000 / fps;
 
 function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawUI();
-  fighter.draw();
   requestAnimationFrame(animate);
-}
 
+  const now = Date.now();
+  const diffrence = now - then;
+
+  if (diffrence > fpsInterval) {
+    then = now - (diffrence % fpsInterval);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img_back, 0, 0);
+    fighter.draw();
+    drawUI();
+  }
+}
 animate();
