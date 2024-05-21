@@ -6,13 +6,16 @@ const img_back = new Image();
 img_back.src = "assets/background.png";
 
 const img_idle = new Image();
-img_idle.src = "assets/default right.png";
+img_idle.src =
+  "assets/PlayStation - International Karate Plus PAL - Fighter.png";
 
 const img_walk_r = new Image();
-img_walk_r.src = "assets/default right.png";
+img_walk_r.src =
+  "assets/PlayStation - International Karate Plus PAL - Fighter.png";
 
 const img_walk_l = new Image();
-img_walk_l.src = "assets/default left.png";
+img_walk_l.src =
+  "assets/PlayStation - International Karate Plus PAL - Fighter.png";
 
 const cursor = {
   x: 0,
@@ -79,8 +82,8 @@ class Character {
       65,
       this.pos.x,
       this.pos.y,
-      60,
-      102
+      90,
+      150
     );
 
     if (key.d.pressed) {
@@ -103,7 +106,6 @@ class Character {
       if (this.frame < this.maxframes) this.frame++;
       else this.frame = 0;
     }
-    if (this.state == "idle") this.img = img_idle;
   }
 }
 
@@ -111,7 +113,7 @@ const fighter = new Character({
   img: img_idle,
   pos: {
     x: 150,
-    y: 580,
+    y: 530,
   },
 });
 ///////////////////////////////////////////
