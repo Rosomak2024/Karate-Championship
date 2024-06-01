@@ -15,7 +15,7 @@ const img_walk_l = new Image();
 img_walk_l.src = "assets/default.png";
 
 const img_kick_r = new Image();
-img_kick_r.src = "assets/file.png";
+img_kick_r.src = "assets/kick.png";
 
 const cursor = {
   x: 0,
@@ -68,11 +68,11 @@ window.addEventListener("keyup", function (evt) {
   }
 });
 
-function drawUI() {
-  ctx.font = "28px Arial";
-  ctx.fillStyle = "white";
-  // ctx.fillText("reset", 1045, 765);
-}
+// function drawUI() {
+//   ctx.font = "28px Arial";
+//   ctx.fillStyle = "white";
+//   // ctx.fillText("reset", 1045, 765);
+// }
 
 class Character {
   constructor({ img, pos }) {
@@ -81,15 +81,15 @@ class Character {
     this.frame = 0;
     this.maxframes = 3;
     this.frameReplayWidth = 52;
-    this.state = "idle";
+    this.state = "img_walk_r";
   }
 
   draw() {
     ctx.drawImage(
       this.img,
       this.frame * this.frameReplayWidth, // position X source // frameWidth to replay
-      0, // position Y source
-      52, // Width source
+      0, // positi on Y source
+      this.frameReplayWidth, // Width source
       63, // Height source
       this.pos.x, // destination X
       this.pos.y, // destionaton Y
@@ -116,19 +116,23 @@ class Character {
       this.img = img_walk_r;
       if (this.frame < this.maxframes) {
         this.frame++;
+        this.maxframes = 3;
+        this.frameReplayWidth = 52;
       } else this.frame = 0;
     }
     if (this.state == "walk_l") {
       this.img = img_walk_l;
       if (this.frame < this.maxframes) {
         this.frame++;
+        this.maxframes = 3;
+        this.frameReplayWidth = 52;
       } else this.frame = 0;
     }
     if (this.state == "kick_r") {
       this.img = img_kick_r;
       if (this.frame < this.maxframes) {
         this.frame++;
-        this.frameReplayWidth = 68;
+        this.frameReplayWidth = 67;
         this.maxframes = 2;
       } else {
         this.frame = 0;
@@ -147,7 +151,7 @@ const fighter = new Character({
 ///////////////////////////////////////////
 
 let then = Date.now();
-let fps = 15;
+let fps = 10;
 const fpsInterval = 1000 / fps;
 
 function animate() {
