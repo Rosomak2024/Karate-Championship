@@ -1,21 +1,24 @@
 import "./style.css";
-const canvas = document.querySelector("#game_canvas");
-const ctx = canvas.getContext("2d");
+import "./player2.js";
+import { Character2 } from "./player2.js";
 
-const img_back = new Image();
-img_back.src = "assets/background.png";
+export const canvas = document.querySelector("#game_canvas");
+export const ctx = canvas.getContext("2d");
 
-const img_idle = new Image();
-img_idle.src = "assets/default.png";
+const img_background = new Image();
+img_background.src = "assets/background.png";
 
-const img_walk_r = new Image();
-img_walk_r.src = "assets/default.png";
+export const img_idle_fighter = new Image();
+img_idle_fighter.src = "assets/default.png";
 
-const img_walk_l = new Image();
-img_walk_l.src = "assets/default.png";
+export const img_walk_right = new Image();
+img_walk_right.src = "assets/default.png";
 
-const img_kick_r = new Image();
-img_kick_r.src = "assets/kick.png";
+export const img_walk_left = new Image();
+img_walk_left.src = "assets/default.png";
+
+export const img_kick_right_middle = new Image();
+img_kick_right_middle.src = "assets/kick.png";
 
 const cursor = {
   x: 0,
@@ -23,9 +26,9 @@ const cursor = {
 };
 
 canvas.addEventListener("click", function (evt) {
-  let game_rect = canvas.getBoundingClientRect();
-  cursor.x = evt.clientX - game_rect.left;
-  cursor.y = evt.clientY - game_rect.top;
+  let game_rectangle = canvas.getBoundingClientRect();
+  cursor.x = evt.clientX - game_rectangle.left;
+  cursor.y = evt.clientY - game_rectangle.top;
 });
 
 const key = {
@@ -34,21 +37,16 @@ const key = {
   j: { pressed: false },
 };
 
-// let current_key = "";
-
 window.addEventListener("keydown", function (evt) {
   console.log(evt);
   if (evt.key == "a") {
     key.a.pressed = true;
-    // current_key = "a";
   }
   if (evt.key == "d") {
     key.d.pressed = true;
-    // current_key = "d";
   }
   if (evt.key == "j") {
     key.j.pressed = true;
-    // current_key = "j";
   }
 });
 window.addEventListener("keyup", function (evt) {
@@ -81,7 +79,7 @@ class Character {
     this.frame = 0;
     this.maxframes = 3;
     this.frameReplayWidth = 52;
-    this.state = "img_walk_r";
+    this.state = "img_walk_right";
   }
 
   draw() {
@@ -90,7 +88,7 @@ class Character {
       this.frame * this.frameReplayWidth, // position X source // frameWidth to replay
       0, // positi on Y source
       this.frameReplayWidth, // Width source
-      63, // Height source
+      67, // Height source
       this.pos.x, // destination X
       this.pos.y, // destionaton Y
       90, // destnation Width
@@ -113,7 +111,7 @@ class Character {
     }
 
     if (this.state == "walk_r") {
-      this.img = img_walk_r;
+      this.img = img_walk_right;
       if (this.frame < this.maxframes) {
         this.frame++;
         this.maxframes = 3;
@@ -121,7 +119,7 @@ class Character {
       } else this.frame = 0;
     }
     if (this.state == "walk_l") {
-      this.img = img_walk_l;
+      this.img = img_walk_left;
       if (this.frame < this.maxframes) {
         this.frame++;
         this.maxframes = 3;
@@ -129,7 +127,7 @@ class Character {
       } else this.frame = 0;
     }
     if (this.state == "kick_r") {
-      this.img = img_kick_r;
+      this.img = img_kick_right_middle;
       if (this.frame < this.maxframes) {
         this.frame++;
         this.frameReplayWidth = 67;
@@ -142,9 +140,17 @@ class Character {
 }
 
 const fighter = new Character({
-  img: img_idle,
+  img: img_idle_fighter,
   pos: {
     x: 150,
+    y: 530,
+  },
+});
+
+const fighter2 = new Character2({
+  img: img_idle_fighter,
+  pos: {
+    x: 650,
     y: 530,
   },
 });
@@ -154,7 +160,7 @@ let then = Date.now();
 let fps = 10;
 const fpsInterval = 1000 / fps;
 
-function animate() {
+export function animate() {
   requestAnimationFrame(animate);
 
   const now = Date.now();
@@ -164,9 +170,10 @@ function animate() {
     then = now - (diffrence % fpsInterval);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img_back, 0, 0);
+    ctx.drawImage(img_background, 0, 0);
     fighter.draw();
-    drawUI();
+    fighter2.draw2();
+    // drawUI();
   }
 }
 animate();
