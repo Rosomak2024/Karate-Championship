@@ -1,9 +1,7 @@
 import "./style.css";
-import "./player2.js";
-import { Character2 } from "./player2.js";
 
-export const canvas = document.querySelector("#game_canvas");
-export const ctx = canvas.getContext("2d");
+const canvas = document.querySelector("#game_canvas");
+const ctx = canvas.getContext("2d");
 
 const img_background = new Image();
 img_background.src = "assets/background.png";
@@ -19,17 +17,6 @@ img_walk_left.src = "assets/default.png";
 
 export const img_kick_right_middle = new Image();
 img_kick_right_middle.src = "assets/kick.png";
-
-const cursor = {
-  x: 0,
-  y: 0,
-};
-
-canvas.addEventListener("click", function (evt) {
-  let game_rectangle = canvas.getBoundingClientRect();
-  cursor.x = evt.clientX - game_rectangle.left;
-  cursor.y = evt.clientY - game_rectangle.top;
-});
 
 const key = {
   a: { pressed: false },
@@ -147,13 +134,6 @@ const fighter = new Character({
   },
 });
 
-const fighter2 = new Character2({
-  img: img_idle_fighter,
-  pos: {
-    x: 650,
-    y: 530,
-  },
-});
 ///////////////////////////////////////////
 
 let then = Date.now();
@@ -172,7 +152,6 @@ export function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(img_background, 0, 0);
     fighter.draw();
-    fighter2.draw2();
     // drawUI();
   }
 }
